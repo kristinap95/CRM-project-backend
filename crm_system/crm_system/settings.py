@@ -53,16 +53,16 @@ INSTALLED_APPS = [
 
     # projects apps
     'user',
-    'project',
+    'project.apps.ProjectConfig',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASESS' : (
         'rest_framework.permissions.IsAuthenticated',
-    ],
+    )
 }
 
 SIMPLE_JWT = {
@@ -74,7 +74,13 @@ DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': "auth/password/reset/{uid}/{token}",
     'PERMISSIONS': {
         'user_list': ['rest_framework.permissions.IsAdminUser'],
+        'user': ['djoser.permissions.CurrentUserOrAdmin',],
+        # 'password_reset': ['rest_framework.permissions.IsAdminUser'],
+        # 'password_reset_confirm': ['rest_framework.permissions.IsAdminUser'],
+        'set_password': ['rest_framework.permissions.IsAdminUser'],
     },
+    'SET_PASSWORD_RETYPE' : True,
+    'PASSWORD_RESET_CONFIRM_RETYPE' : True,
 }
 
 AUTH_USER_MODEL = 'user.Account'
@@ -167,3 +173,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
