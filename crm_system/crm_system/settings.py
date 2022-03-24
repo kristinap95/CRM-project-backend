@@ -67,19 +67,27 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('Bearer',),
-   'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
 }
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': "auth/password/reset/{uid}/{token}",
+    'PASSWORD_RESET_CONFIRM_URL': "api/users/password/reset/{uid}/{token}",
     'PERMISSIONS': {
         'user_list': ['rest_framework.permissions.IsAdminUser'],
         'user': ['djoser.permissions.CurrentUserOrAdmin',],
         # 'password_reset': ['rest_framework.permissions.IsAdminUser'],
         # 'password_reset_confirm': ['rest_framework.permissions.IsAdminUser'],
-        'set_password': ['rest_framework.permissions.IsAdminUser'],
+        'set_password': ['rest_framework.permissions.IsAdminUser'], # Admin sam sebi :D
+        'user_create': ['rest_framework.permissions.IsAdminUser'],
+        'user_delete': ['rest_framework.permissions.IsAdminUser'],
+        'edit_user' : ['rest_framework.permissions.IsAdminUser'],
+        'set_username': ['rest_framework.permissions.IsAdminUser'],
+    },
+    'SERIALIZERS' : {
+        'edit_user' : ['rest_framework.serializers.ModelSerializer'],
     },
     'SET_PASSWORD_RETYPE' : True,
+    'SET_USERNAME_RETYPE' : True,
     'PASSWORD_RESET_CONFIRM_RETYPE' : True,
 }
 
@@ -168,12 +176,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+APPEND_SLASH = False
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST = env('EMAIL_HOST')
 # EMAIL_USE_TLS = True
 # EMAIL_PORT = 587
+# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+
